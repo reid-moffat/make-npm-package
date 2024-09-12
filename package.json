@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "listr": "^0.14.3"
+    "listr": "^0.14.3",
+    "tsx": "^4.19.1"
   }
 }
