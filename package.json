@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^5.3.0",
+    "inquirer": "^10.2.2",
     "listr": "^0.14.3",
     "tsx": "^4.19.1"
   }
