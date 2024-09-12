@@ -11,11 +11,11 @@ const run = async () => {
         const packageName = await promptForPackageName();
 
         const defaults = {
-            "Source Control": ["git", "github"],
-            "Changeset Manager": "changeset", // single string
-            "Testing Framework": ["mocha", "jest"],
-            "Linter": ["eslint", "prettier"],
-            "Bundler": "webpack" // single string
+            "Source Control": ["git", "github (hosting)"],
+            "Changeset Manager": "changeset",
+            "Testing": ["mocha (tdd)", "chai"],
+            "Linting": ["tsc", "eslint"],
+            "Build": "tsup"
         };
 
         console.log(chalk.blue.bold("\nDefault Settings for Package Installation:"));
