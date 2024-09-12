@@ -10,6 +10,8 @@ const run = async () => {
     try {
         const packageName = await promptForPackageName();
 
+        const packageDirectory = await promptForPackageDirectory(packageName);
+
         const defaults = {
             "Source Control": ["git", "github (hosting)"],
             "Changeset Manager": "changeset",
@@ -34,16 +36,16 @@ const run = async () => {
         const tasks = new Listr([
             {
                 title: `Creating package.json`,
-                task: () => createPackageJson(packageName, packageConfig),
+                task: () => createPackageJson(packageName, packageConfig)
             },
             {
                 title: `Generating README.md`,
-                task: () => generateReadme(packageName),
+                task: () => generateReadme(packageName)
             },
             {
                 title: `Initializing Git repository`,
-                task: () => initGitRepo(),
-            },
+                task: () => initGitRepo()
+            }
         ]);
 
         await tasks.run();
@@ -80,12 +82,20 @@ const promptForPackageName = async () => {
     return packageName;
 };
 
+const promptForPackageDirectory = async (packageName) => {
+    const { packageDirectory } = await inquirer.prompt({
+        type: 'confirm',
+        name: 'packageDirectory',
+        message: `Package will be created here '${__dirname + '\\' + packageName}' - is this ok?`
+    });
+    return packageDirectory;
+}
+
 const promptForPackageConfig = async () => {
     const { useDefaults } = await inquirer.prompt({
         type: 'confirm',
         name: 'useDefaults',
-        message: `Would you like to use default package configuration?`,
-        default: true,
+        message: `Would you like to use default package configuration?`
     });
 
     let packageConfig;
