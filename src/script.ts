@@ -3,6 +3,8 @@ import * as path from 'path';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import Listr from 'listr';
+import validate from "validate-npm-package-name";
+import npmName from 'npm-name';
 
 const run = async () => {
     try {
@@ -38,10 +40,20 @@ const promptForPackageName = async () => {
         type: 'input',
         name: 'packageName',
         message: `Enter your package name:`,
-        validate: (input) => {
+        validate: async (input) => {
             if (!input.trim()) {
                 return 'Package name is required.';
             }
+            const valid = validate(input).validForNewPackages;
+            if (!valid) {
+                return 'Invalid package name. Please try again.';
+            }
+
+            const available = await npmName(input);
+            if (!available) {
+                return 'Package name is already taken - you won\'t be able to deploy this package. Please try another name.';
+            }
+
             return true;
         },
     });
