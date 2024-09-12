@@ -9,6 +9,26 @@ import npmName from 'npm-name';
 const run = async () => {
     try {
         const packageName = await promptForPackageName();
+
+        const defaults = {
+            "Source Control": ["git", "github"],
+            "Changeset Manager": "changeset", // single string
+            "Testing Framework": ["mocha", "jest"],
+            "Linter": ["eslint", "prettier"],
+            "Bundler": "webpack" // single string
+        };
+
+        console.log(chalk.blue.bold("\nDefault Settings for Package Installation:"));
+
+        for (const [category, options] of Object.entries(defaults)) {
+            if (Array.isArray(options)) {
+                console.log(`${chalk.green(category)}:`);
+                options.forEach(option => console.log(`  ${chalk.yellow('•')} ${chalk.yellow(option)}`));
+            } else {
+                console.log(`${chalk.green(category)}: ${chalk.yellow(options)}`);
+            }
+        }
+
         const packageConfig = await promptForPackageConfig();
 
         const tasks = new Listr([
