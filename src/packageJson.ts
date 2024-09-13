@@ -53,7 +53,7 @@ class PackageJson {
                 url: '',
             };
             this._bugs = '';
-            this._packageManager = 'pnpm';
+            this._packageManager = 'pnpm@9.10.0';
 
             this._devDependencies = [
                 "@changesets/cli",
