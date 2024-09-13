@@ -15,6 +15,7 @@
     "inquirer": "^10.2.2",
     "listr": "^0.14.3",
     "npm-name": "^8.0.0",
+    "shelljs": "^0.8.5",
     "tsx": "^4.19.1",
     "validate-npm-package-name": "^5.0.1"
   }

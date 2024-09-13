@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import shell from 'shelljs';
 
 class PackageJson {
 
@@ -81,6 +82,8 @@ class PackageJson {
         }
 
         fs.writeFileSync(path.join(p, "package.json"), JSON.stringify(result, null, 4));
+
+        shell.exec(`cd ${p} && pnpm install --save-dev ${this._devDependencies.join(' ')}`);
     }
 }
 
