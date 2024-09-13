@@ -5,10 +5,13 @@ import inquirer from 'inquirer';
 import Listr from 'listr';
 import validate from "validate-npm-package-name";
 import npmName from 'npm-name';
+import PackageJson from "./packageJson";
+
+let packageName;
 
 const run = async () => {
     try {
-        const packageName = await promptForPackageName();
+        packageName = await promptForPackageName();
 
         const packageDirectory = await promptForPackageDirectory(packageName);
 
@@ -36,7 +39,7 @@ const run = async () => {
         const tasks = new Listr([
             {
                 title: `Creating package.json`,
-                task: () => createPackageJson(packageName, packageConfig)
+                task: () => { new PackageJson(packageName, true).createFile(packageDirectory); }
             },
             {
                 title: `Generating README.md`,
@@ -121,7 +124,7 @@ const promptForPackageConfig = async () => {
 };
 
 const createPackageJson = (packageName, packageConfig) => {
-    const packageJsonPath = path.join(process.cwd(), 'package.json');
+    const packageJsonPath = path.join(__dirname, packageName, 'package.json');
     const config = packageConfig.useDefaults
         ? {
             name: packageName,
@@ -151,7 +154,7 @@ const createPackageJson = (packageName, packageConfig) => {
 };
 
 const generateReadme = (packageName) => {
-    const readmePath = path.join(process.cwd(), 'README.md');
+    const readmePath = path.join(__dirname, packageName, 'README.md');
     const readmeContent = `# ${packageName}
 
 [![Build Status](https://img.shields.io/badge/status-unstable.svg)](https://travis-ci.org/${process.env.USERNAME}/${packageName})

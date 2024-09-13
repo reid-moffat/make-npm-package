@@ -1,3 +1,6 @@
+import * as fs from 'fs';
+import * as path from 'path';
+
 class PackageJson {
 
     private _name: string;
@@ -20,7 +23,7 @@ class PackageJson {
 
     private _devDependencies: string[];
 
-    constructor(defaults: boolean, name: string) {
+    constructor(name: string, defaults: boolean) {
         if (defaults) {
             this._name = name;
             this._version = '0.0.0';
@@ -65,6 +68,10 @@ class PackageJson {
                 "ts-node",
             ];
         }
+    }
+
+    public createFile(p: string) {
+        fs.writeFileSync(path.join(p, "package.json"), JSON.stringify(this, null, 2));
     }
 }
 
