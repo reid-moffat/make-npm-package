@@ -88,7 +88,7 @@ const promptForPackageDirectory = async (packageName) => {
         name: 'packageDirectory',
         message: `Package will be created here '${__dirname + '\\' + packageName}' - is this ok?`
     });
-    return packageDirectory;
+    return __dirname + '\\' + packageName;
 }
 
 const promptForPackageConfig = async () => {
