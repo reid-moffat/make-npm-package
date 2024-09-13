@@ -72,7 +72,15 @@ class PackageJson {
 
     public createFile(p: string) {
         fs.mkdirSync(p, { recursive: true });
-        fs.writeFileSync(path.join(p, "package.json"), JSON.stringify(this, null, 2));
+
+        const result = {};
+        for (const key of Object.keys(this)) {
+            if (key !== '_devDependencies') {
+                result[key.replace('_', '')] = this[key];
+            }
+        }
+
+        fs.writeFileSync(path.join(p, "package.json"), JSON.stringify(result, null, 4));
     }
 }
 
