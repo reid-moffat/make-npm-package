@@ -71,6 +71,7 @@ class PackageJson {
     }
 
     public createFile(p: string) {
+        fs.mkdirSync(p, { recursive: true });
         fs.writeFileSync(path.join(p, "package.json"), JSON.stringify(this, null, 2));
     }
 }
