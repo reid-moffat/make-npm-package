@@ -83,7 +83,7 @@ class PackageJson {
 
         fs.writeFileSync(path.join(p, "package.json"), JSON.stringify(result, null, 4));
 
-        shell.exec(`cd ${p} && pnpm install --save-dev ${this._devDependencies.join(' ')}`);
+        shell.exec(`cd ${p} && pnpm install --save-dev ${this._devDependencies.join(' ')} --silent`);
     }
 }
 
