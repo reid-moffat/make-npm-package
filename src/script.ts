@@ -6,6 +6,7 @@ import Listr from 'listr';
 import validate from "validate-npm-package-name";
 import npmName from 'npm-name';
 import PackageJson from "./packageJson";
+import Readme from "./readme";
 
 let packageName;
 
@@ -146,36 +147,10 @@ const createPackageJson = (packageName, packageConfig) => {
 
 const generateReadme = (packageName) => {
     const readmePath = path.join(__dirname, packageName, 'README.md');
-    const readmeContent = `# ${packageName}
 
-[![Build Status](https://img.shields.io/badge/status-unstable.svg)](https://travis-ci.org/${process.env.USERNAME}/${packageName})
+    const readme = new Readme(packageName);
+    const readmeContent = readme.getReadmeString();
 
-## Description
-
-A brief description of your package goes here.
-
-## Installation
-
-\`\`bash
-npm install ${packageName}
-\`\`
-
-## Usage
-
-...
-
-## Contributing
-
-...
-
-## Tests
-
-\`\`bash
-npm test
-\`\`
-
-
-`;
     fs.writeFileSync(readmePath, readmeContent);
 };
 
