@@ -16,14 +16,16 @@ const run = async () => {
         const packageDirectory = await promptForPackageDirectory(packageName);
 
         const defaults = {
-            "Source Control": ["git", "github (hosting)"],
+            "Language": "TypeScript",
+            "Source Control": "git",
             "Changeset Manager": "changeset",
             "Testing": ["mocha (tdd)", "chai"],
             "Linting": ["tsc", "eslint"],
-            "Build": "tsup"
+            "Build": "tsup",
+            "Package Manager": "pnpm"
         };
 
-        console.log(chalk.blue.bold("\nDefault Settings for Package Installation:"));
+        console.log(chalk.blue.bold("Default Settings for Package Installation:"));
 
         for (const [category, options] of Object.entries(defaults)) {
             if (Array.isArray(options)) {
@@ -105,17 +107,6 @@ const promptForPackageConfig = async () => {
     if (!useDefaults) {
         // Prompt for specific config options if not using defaults
         packageConfig = await inquirer.prompt([
-            {
-                type: 'input',
-                name: 'version',
-                message: `Enter version number:`,
-                default: '1.0.0',
-            },
-            {
-                type: 'input',
-                name: 'description',
-                message: `Enter package description:`,
-            },
             // Add more config prompts as needed
         ]);
     }

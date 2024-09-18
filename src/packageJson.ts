@@ -67,6 +67,8 @@ class PackageJson {
                 "tsup",
                 "typescript",
                 "ts-node",
+                "generate-arrays",
+                "suite-metrics"
             ];
         }
     }
