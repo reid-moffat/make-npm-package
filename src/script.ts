@@ -8,11 +8,9 @@ import npmName from 'npm-name';
 import PackageJson from "./packageJson";
 import Readme from "./readme";
 
-let packageName;
-
 const run = async () => {
     try {
-        packageName = await promptForPackageName();
+        const packageName = await promptForPackageName();
 
         const packageDirectory = await promptForPackageDirectory(packageName);
 
@@ -36,8 +34,6 @@ const run = async () => {
                 console.log(`${chalk.green(category)}: ${chalk.yellow(options)}`);
             }
         }
-
-        const packageConfig = await promptForPackageConfig();
 
         const tasks = new Listr([
             {
