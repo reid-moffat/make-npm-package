@@ -54,7 +54,7 @@ class PackageJson {
                 url: '',
             };
             this._bugs = '';
-            this._packageManager = 'pnpm@9.10.0';
+            this._packageManager = 'pnpm';
 
             this._devDependencies = [
                 "@changesets/cli",
@@ -73,9 +73,11 @@ class PackageJson {
         }
     }
 
+    // Writes the data in this object to a new package.json file in the given directory
     public createFile(p: string) {
         fs.mkdirSync(p, { recursive: true });
 
+        // This object -> JSON (dependencies installed later & _ removed from field names)
         const result = {};
         for (const key of Object.keys(this)) {
             if (key !== '_devDependencies') {
@@ -85,7 +87,7 @@ class PackageJson {
 
         fs.writeFileSync(path.join(p, "package.json"), JSON.stringify(result, null, 4));
 
-        shell.exec(`cd ${p} && pnpm install --save-dev ${this._devDependencies.join(' ')} --silent`);
+        shell.exec(`cd ${p} && ${this._packageManager} install -D ${this._devDependencies.join(' ')} --silent`);
     }
 }
 
