@@ -7,34 +7,12 @@ class Readme {
     }
 
     public getReadmeString() {
-        return `# ${this._packageName}
+        const header = `# ${this._packageName}\n`;
+        const description = `A brief description of your package goes here\n`;
+        const installation = `## 📦 Installation\n\n\`\`\`bash\nnpm install ${this._packageName}\n\`\`\`\n`;
+        const usage = `## 🚀 Usage\n\n...\n`;
 
-## Description
-
-A brief description of your package goes here.
-
-## Installation
-
-\`\`bash
-npm install ${this._packageName}
-\`\`
-
-## Usage
-
-...
-
-## Contributing
-
-...
-
-## Tests
-
-\`\`bash
-npm test
-\`\`
-
-
-`;
+        return header + description + installation + usage;
     }
 }
 
