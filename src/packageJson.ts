@@ -20,7 +20,7 @@ class PackageJson {
     private _files: string[];
     private _repository: { type: string, url: string };
     private _bugs: string;
-    private _packageManager: string;
+    private _packageManager: 'npm' | 'yarn' | 'pnpm';
 
     private _devDependencies: string[];
 
@@ -87,7 +87,16 @@ class PackageJson {
 
         fs.writeFileSync(path.join(p, "package.json"), JSON.stringify(result, null, 4));
 
+        this.installPackageManager();
+
         shell.exec(`cd ${p} && ${this._packageManager} install -D ${this._devDependencies.join(' ')} --silent`);
+    }
+
+    // Installs the package manager if it is not already installed
+    public installPackageManager() {
+        if (shell.exec(`which ${this._packageManager}`).code !== 0) {
+            shell.exec(`npm install -g ${this._packageManager} --silent`);
+        }
     }
 }
 
