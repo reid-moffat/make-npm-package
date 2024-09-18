@@ -7,12 +7,26 @@ class Readme {
     }
 
     public getReadmeString() {
-        const header = `# ${this._packageName}\n`;
-        const description = `A brief description of your package goes here\n`;
-        const installation = `## 📦 Installation\n\n\`\`\`bash\nnpm install ${this._packageName}\n\`\`\`\n`;
-        const usage = `## 🚀 Usage\n\n...\n`;
 
-        return header + description + installation + usage;
+        let str = "";
+        const addLine = (line: string, newlines: number = 2) => str = str + line + "\n".repeat(newlines);
+
+        addLine(`# ${this._packageName}`);
+        addLine(`A brief description of your package goes here`);
+
+        addLine('## 📦 Installation');
+        addLine('```bash', 1);
+        addLine(`npm install ${this._packageName}`);
+        addLine(`# or`, 1);
+        addLine(`yarn add install ${this._packageName}`);
+        addLine(`# or`, 1);
+        addLine(`pnpm install ${this._packageName}`, 1);
+        addLine('```');
+
+        addLine('## 🚀 Usage');
+        addLine('...');
+
+        return str;
     }
 }
 
