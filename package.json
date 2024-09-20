@@ -1,5 +1,5 @@
 {
-  "name": "make-npm-package",
+  "name": "npm-package-factory",
   "version": "1.0.0",
   "description": "Easily generate boilerplate for an npm package",
   "main": "index.js",
