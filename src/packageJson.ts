@@ -116,6 +116,9 @@ class PackageJson {
         // This object -> JSON (dependencies installed later & _ removed from field names)
         const result = {};
         for (const key of Object.keys(this)) {
+            if (key === '_packageManager') {
+                continue; // Ignore package manager as this needs a version
+            }
             if (key !== '_devDependencies') {
                 result[key.replace('_', '')] = this[key];
             }
@@ -125,7 +128,8 @@ class PackageJson {
 
         this.validatePackageManager();
 
-        shell.exec(`cd ${directory} && ${this._packageManager} install -D ${this._devDependencies.join(' ')} --silent`);
+        shell.cd(directory);
+        shell.exec(`${this._packageManager} install -D ${this._devDependencies.join(' ')} --silent`);
     }
 }
 
