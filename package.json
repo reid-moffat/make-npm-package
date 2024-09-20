@@ -12,6 +12,10 @@
     "deployHelp": "echo \"1) Run 'changeset' 2) Merge changes to main 3) Merge changeset PR 4) npm run deploy (verify it looks good)\"",
     "deploy": "git checkout main && git pull && npm run build && npm publish"
   },
+  "files": [
+    "CHANGELOG.md",
+    "dist"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
