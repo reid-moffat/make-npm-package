@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import shell from 'shelljs';
 import inquirer from 'inquirer';
+import chalk from "chalk";
 
 class PackageJson {
 
@@ -74,9 +75,37 @@ class PackageJson {
         }
     }
 
+    // Check if the desired package manager CLI is installed & tries to install it if possible (yarn/pnpm via npm)
     private validatePackageManager() {
         if (shell.which(this._packageManager)) {
-            ;
+            return;
+        }
+
+        const npmInstalled = shell.which('npm');
+
+        if (this._packageManager === 'npm') {
+            console.log(chalk.red(`The npm CLI is not installed. Please install npm CLI manually: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm`));
+        } else if (this._packageManager === 'yarn') {
+            if (npmInstalled) {
+                console.log(`Installing yarn CLI via npm...`);
+                shell.exec('npm install -g yarn --silent');
+                return;
+            }
+
+            console.log(chalk.red(`The yarn CLI is not installed. If you install npm CLI it can be installed automatically,`));
+            console.log(chalk.red(`otherwise please install yarn CLI manually: https://classic.yarnpkg.com/lang/en/docs/install`));
+        } else if (this._packageManager === 'pnpm') {
+            if (npmInstalled) {
+                console.log(`Installing pnpm CLI via npm...`);
+                shell.exec('npm install -g pnpm --silent');
+                return;
+            }
+
+            console.log(chalk.red(`The pnpm CLI is not installed. If you install npm CLI it can be installed automatically,`));
+            console.log(chalk.red(`otherwise please install pnpm CLI manually: https://pnpm.io/installation`));
+            process.exit(0);
+        } else {
+            console.log(chalk.red(`Invalid package manager: ${this._packageManager}`));
         }
     }
 
