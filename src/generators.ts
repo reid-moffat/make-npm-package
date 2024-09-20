@@ -1,17 +1,21 @@
-import * as fs from 'fs';
+import * as fs from "fs";
 
-class Readme {
+class Generators {
 
     private readonly _packageName: string;
+    private readonly _packageDirectory: string;
 
-    constructor(packageName: string) {
+    constructor(packageName: string, packageDirectory: string) {
         this._packageName = packageName;
+        this._packageDirectory = packageDirectory;
+
+        fs.mkdirSync(this._packageDirectory, { recursive: true });
     }
 
-    public getReadmeString() {
+    public createReadme = () => {
 
-        let str = "";
-        const addLine = (line: string, newlines: number = 2) => str = str + line + "\n".repeat(newlines);
+        let readmeStr = "";
+        const addLine = (line: string, newlines: number = 2) => readmeStr += line + "\n".repeat(newlines);
 
         addLine(`# ${this._packageName}`);
         addLine(`A brief description of your package goes here`);
@@ -28,14 +32,8 @@ class Readme {
         addLine('## 🚀 Usage');
         addLine('...');
 
-        return str;
-    }
-
-    public createFile(directory: string) {
-        fs.mkdirSync(directory, { recursive: true });
-
-        fs.writeFileSync(directory + "/README.md", this.getReadmeString());
+        fs.writeFileSync(this._packageDirectory + "/README.md", readmeStr);
     }
 }
 
-export default Readme;
+export default Generators;

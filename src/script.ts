@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import yoctoSpinner from 'yocto-spinner';
 import PackageJson from "./packageJson";
-import Readme from "./readme";
+import Generators from './generators';
 import { promptForPackageDirectory, promptForPackageName, promptForUsingDefaults } from "./prompts";
 
 const run = async () => {
@@ -13,12 +13,14 @@ const run = async () => {
         await promptForUsingDefaults();
 
         const tasks = async () => {
+            const generators = new Generators(packageName, packageDirectory);
+
             let spinner = yoctoSpinner({ text: 'Creating package.json' }).start();
             new PackageJson(packageName, true).createFile(packageDirectory);
             spinner.success('package.json created');
 
             spinner = yoctoSpinner({ text: 'Creating README.md...' }).start();
-            new Readme(packageName).createFile(packageDirectory);
+            generators.createReadme();
             spinner.success('README.md created');
 
             spinner = yoctoSpinner({ text: 'Initializing git repository...' }).start();
