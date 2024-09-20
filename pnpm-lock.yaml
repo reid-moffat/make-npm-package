@@ -48,6 +48,9 @@ importers:
       '@types/shelljs':
         specifier: ^0.8.15
         version: 0.8.15
+      '@types/validate-npm-package-name':
+        specifier: ^4.0.2
+        version: 4.0.2
       chai:
         specifier: ^5.1.1
         version: 5.1.1
@@ -518,6 +521,9 @@ packages:
 
   '@types/shelljs@0.8.15':
     resolution: {integrity: sha512-vzmnCHl6hViPu9GNLQJ+DZFd6BQI2DBTUeOvYHqkWQLMfKAAQYMb/xAmZkTogZI/vqXHCWkqDRymDI5p0QTi5Q==}
+
+  '@types/validate-npm-package-name@4.0.2':
+    resolution: {integrity: sha512-lrpDziQipxCEeK5kWxvljWYhUvOiB2A9izZd9B2AFarYAkqZshb4lPbRs7zKEic6eGtH8V/2qJW+dPp9OtF6bw==}
 
   '@types/wrap-ansi@3.0.0':
     resolution: {integrity: sha512-ltIpx+kM7g/MLRZfkbL7EsCEjfzCcScLpkg37eXEtx5kmrAKBkTJwd1GIAjDSL8wTpM6Hzn5YO4pSb91BEwu1g==}
@@ -2093,6 +2099,8 @@ snapshots:
     dependencies:
       '@types/glob': 7.2.0
       '@types/node': 22.5.5
+
+  '@types/validate-npm-package-name@4.0.2': {}
 
   '@types/wrap-ansi@3.0.0': {}
 
