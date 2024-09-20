@@ -56,6 +56,16 @@ class Generators {
     public installDependencies = () => {
         this._packageJson.installDependencies();
     }
+
+    public createSourceFiles = () => {
+        const srcDirectory = this._packageDirectory + "/src";
+        fs.mkdirSync(srcDirectory, { recursive: true });
+        fs.writeFileSync(srcDirectory + "/index.ts", "");
+
+        const testDirectory = this._packageDirectory + "/test";
+        fs.mkdirSync(testDirectory, { recursive: true });
+        fs.writeFileSync(testDirectory + "/index.test.ts", "");
+    }
 }
 
 class PackageJson {

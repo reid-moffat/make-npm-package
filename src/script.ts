@@ -31,6 +31,10 @@ const run = async () => {
             const dependenciesSpinner = yoctoSpinner({ text: 'Installing dependencies...' }).start();
             generators.installDependencies();
             dependenciesSpinner.success('Dependencies installed');
+
+            const srcSpinner = yoctoSpinner({ text: 'Creating code structure...' }).start();
+            generators.createSourceFiles();
+            srcSpinner.success('Code structure created');
         }
 
         await tasks();
