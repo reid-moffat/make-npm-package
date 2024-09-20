@@ -90,6 +90,13 @@ class Generators {
             "    test(\"Test name\", function() {\n        expect(true).to.equal(true);\n    });\n});\n";
         fs.mkdirSync(testDirectory, { recursive: true });
         fs.writeFileSync(testDirectory + "/index.test.ts", testBoilerplate);
+
+        const mocharcPath = this._packageDirectory + "/.mocharc.json";
+        const mocharc = '{"require":"ts-node/register","extension":["ts"],"spec":"./test/**/*.test{.js,.ts}","node-option":["loader=ts-node/esm"],"recursive":true,"timeout":5000}';
+        fs.writeFileSync(mocharcPath, mocharc);
+
+        shell.cd(this._packageDirectory);
+        shell.exec('tsc --init > nul 2>&1');
     }
 }
 
