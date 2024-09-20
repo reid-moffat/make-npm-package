@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import shell from 'shelljs';
+import inquirer from 'inquirer';
 
 class PackageJson {
 
@@ -73,9 +74,15 @@ class PackageJson {
         }
     }
 
+    private validatePackageManager() {
+        if (shell.which(this._packageManager)) {
+            ;
+        }
+    }
+
     // Writes the data in this object to a new package.json file in the given directory
-    public createFile(p: string) {
-        fs.mkdirSync(p, { recursive: true });
+    public createFile(directory: string) {
+        fs.mkdirSync(directory, { recursive: true });
 
         // This object -> JSON (dependencies installed later & _ removed from field names)
         const result = {};
@@ -85,18 +92,112 @@ class PackageJson {
             }
         }
 
-        fs.writeFileSync(path.join(p, "package.json"), JSON.stringify(result, null, 4));
+        fs.writeFileSync(path.join(directory, "package.json"), JSON.stringify(result, null, 4));
 
-        this.installPackageManager();
+        this.validatePackageManager();
 
-        shell.exec(`cd ${p} && ${this._packageManager} install -D ${this._devDependencies.join(' ')} --silent`);
+        shell.exec(`cd ${directory} && ${this._packageManager} install -D ${this._devDependencies.join(' ')} --silent`);
     }
 
-    // Installs the package manager if it is not already installed
-    public installPackageManager() {
-        if (shell.exec(`which ${this._packageManager}`).code !== 0) {
-            shell.exec(`npm install -g ${this._packageManager} --silent`);
+    private checkPackageManager() {
+        const managers = ['npm', 'yarn', 'pnpm'];
+        for (const manager of managers) {
+            const x = shell.which(manager);
+            console.log(`Manager which: ${x}`);
+            if (x) {
+                this._packageManager = manager as 'npm' | 'yarn' | 'pnpm';
+                break;
+            }
         }
+
+        if (!this._packageManager) {
+            console.log('No package manager found. Please install one of the following: npm, yarn, or pnpm.');
+            return false;
+        }
+
+        return true;
+    }
+
+    public async installPackages2() {
+        if (!this.checkPackageManager()) {
+            return;
+        }
+
+        console.log(`Using ${this._packageManager} to install packages.`);
+
+        const answer = await inquirer.prompt([
+            {
+                type: 'confirm',
+                name: 'installManager',
+                message: `Do you want to install ${this._packageManager}?`,
+                default: true,
+            },
+        ]);
+
+        if (!answer.installManager) {
+            console.log('Installation canceled by the user.');
+            return;
+        }
+
+        if (this._packageManager !== 'npm') {
+            console.log(`Cannot install ${this._packageManager} through the command line.`);
+            return;
+        }
+
+        shell.exec(`npm i -g ${this._packageManager}`);
+
+        shell.exec(`${this._packageManager} install -D ${this._devDependencies.join(' ')} --silent`);
+    }
+
+    // rsp b
+    public async installPackages() {
+        const packageManagers = ['npm', 'yarn', 'pnpm'];
+        const { packageManager } = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'packageManager',
+                message: 'Select your package manager:',
+                choices: packageManagers,
+                default: this._packageManager
+            }
+        ]);
+
+        this._packageManager = packageManager;
+
+        const installCommand = `${this._packageManager} install -D ${this._devDependencies.join(' ')} --silent`;
+
+        // Check if the package manager is installed
+        try {
+            shell.exec(`${this._packageManager} --version`, { silent: true });
+        } catch (error) {
+            const { install } = await inquirer.prompt([
+                {
+                    type: 'confirm',
+                    name: 'install',
+                    message: `The ${this._packageManager} package manager is not installed. Do you want to install it?`,
+                    default: true
+                }
+            ]);
+
+            if (!install) {
+                console.error(`Please install the ${this._packageManager} package manager to use this script.`);
+                process.exit(1);
+            }
+
+            // Try to install the package manager via npm
+            try {
+                shell.exec(`npm install -g ${this._packageManager}`, { silent: true });
+            } catch (error) {
+                const link = this._packageManager === 'npm'
+                    ? 'https://docs.npmjs.com/downloading-and-installing-node-js-and-npm'
+                    : (this._packageManager === 'yarn' ? 'https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable' : 'https://pnpm.io/installation');
+                console.error(`Could not install ${this._packageManager} via npm. Please install it manually through the following link: ${link}`);
+                process.exit(1);
+            }
+        }
+
+        // Install dependencies
+        shell.exec(installCommand, { silent: true });
     }
 }
 
