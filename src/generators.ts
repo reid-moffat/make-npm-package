@@ -3,6 +3,7 @@ import * as path from 'path';
 import shell from 'shelljs';
 import chalk from "chalk";
 import yoctoSpinner from "yocto-spinner";
+import * as commentJson from 'comment-json';
 
 class Generators {
 
@@ -97,6 +98,11 @@ class Generators {
 
         shell.cd(this._packageDirectory);
         shell.exec('tsc --init > nul 2>&1');
+
+        const tsconfigPath = this._packageDirectory  + '/tsconfig.json';
+        const tsconfig = commentJson .parse(fs.readFileSync(tsconfigPath, 'utf8')); // @ts-ignore
+        tsconfig.compilerOptions.module = 'es6'; // Allows for tests to run
+        fs.writeFileSync(tsconfigPath, commentJson .stringify(tsconfig, null, 2));
     }
 }
 
@@ -183,7 +189,7 @@ class PackageJson {
             result[key.replace('_', '')] = this[key];
         }
 
-        fs.writeFileSync(path.join(this.packageDirectory, "package.json"), JSON.stringify(result, null, 4));
+        fs.writeFileSync(path.join(this.packageDirectory, "package.json"), JSON.stringify(result, null, 2));
     }
 
     // Verifies package manager is installed, then installs dependencies
