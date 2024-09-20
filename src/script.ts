@@ -1,5 +1,3 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import Listr from 'listr';
@@ -23,7 +21,7 @@ const run = async () => {
             },
             {
                 title: `Generating README.md`,
-                task: () => generateReadme(packageName)
+                task: () => { new Readme(packageName).createFile(packageDirectory) }
             },
             {
                 title: `Initializing Git repository`,
@@ -125,15 +123,6 @@ const promptForUsingDefaults = async () => {
         console.log(chalk.red('Exiting script...'));
         process.exit(0);
     }
-};
-
-const generateReadme = (packageName) => {
-    const readmePath = path.join(__dirname, packageName, 'README.md');
-
-    const readme = new Readme(packageName);
-    const readmeContent = readme.getReadmeString();
-
-    fs.writeFileSync(readmePath, readmeContent);
 };
 
 const initGitRepo = () => {

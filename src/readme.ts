@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+
 class Readme {
 
     private readonly _packageName: string;
@@ -27,6 +29,12 @@ class Readme {
         addLine('...');
 
         return str;
+    }
+
+    public createFile(directory: string) {
+        fs.mkdirSync(directory, { recursive: true });
+
+        fs.writeFileSync(directory + "/README.md", this.getReadmeString());
     }
 }
 
