@@ -66,12 +66,30 @@ const promptForPackageName = async () => {
 };
 
 const promptForPackageDirectory = async (packageName) => {
-    const { packageDirectory } = await inquirer.prompt({
+    const defaultDirectory = __dirname + '\\' + packageName;
+
+    const { useDefaultDirectory } = await inquirer.prompt({
         type: 'confirm',
-        name: 'packageDirectory',
-        message: `Package will be created here '${__dirname + '\\' + packageName}' - is this ok?`
+        name: 'useDefaultDirectory',
+        message: `Package will be created here '${defaultDirectory}' - is this ok?`,
+        default: true
     });
-    return __dirname + '\\' + packageName;
+
+    if (useDefaultDirectory) {
+        return defaultDirectory;
+    }
+
+    const { packageDirectory } = await inquirer.prompt({
+        type: 'input',
+        name: 'packageDirectory',
+        message: `Which path would you like to create the package in?`
+    });
+
+    if (!packageDirectory.endsWith(packageName)) {
+        return packageDirectory + '\\' + packageName;
+    }
+
+    return packageDirectory;
 }
 
 const promptForUsingDefaults = async () => {
