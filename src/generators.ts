@@ -22,25 +22,20 @@ class Generators {
     }
 
     public runTasks = () => {
-        const packageSpinner = yoctoSpinner({ text: 'Creating package.json' }).start();
+        const packageSpinner = yoctoSpinner({ text: 'Creating development files...' }).start();
         this.createPackageJson();
-        packageSpinner.success('package.json created');
-
-        const readmeSpinner = yoctoSpinner({ text: 'Creating README.md...' }).start();
         this.createReadme();
-        readmeSpinner.success('README.md created');
-
-        const gitSpinner = yoctoSpinner({ text: 'Initializing git repository...' }).start();
         this.initGitRepo();
-        gitSpinner.success('Git repository initialized');
-
-        const dependenciesSpinner = yoctoSpinner({ text: 'Installing dependencies...' }).start();
-        this.installDependencies();
-        dependenciesSpinner.success('Dependencies installed');
+        this.initChangeset();
+        packageSpinner.success('Development files created');
 
         const srcSpinner = yoctoSpinner({ text: 'Creating code structure...' }).start();
         this.createSourceFiles();
         srcSpinner.success('Code structure created');
+
+        const dependenciesSpinner = yoctoSpinner({ text: 'Installing dependencies...' }).start();
+        this.installDependencies();
+        dependenciesSpinner.success('Dependencies installed');
     }
 
     private createPackageJson = () => {
@@ -81,6 +76,12 @@ class Generators {
         this._packageJson.installDependencies();
     }
 
+    private initChangeset = () => {
+        shell.cd(this._packageDirectory);
+        shell.exec('npx changeset init');
+    }
+
+    // Creates source directory, test directory & example, mocharc, tsconfig files
     private createSourceFiles = () => {
         const srcDirectory = this._packageDirectory + "/src";
         fs.mkdirSync(srcDirectory, { recursive: true });
