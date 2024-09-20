@@ -1,5 +1,5 @@
-import { promptForPackageDirectory, promptForPackageName, promptForUsingDefaults } from "./src/prompts";
-import Generators from "./src/generators";
+import { promptForPackageDirectory, promptForPackageName, promptForUsingDefaults } from "./prompts";
+import Generators from "./generators";
 import chalk from "chalk";
 
 const run = async () => {

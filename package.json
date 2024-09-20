@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "run": "tsx index.ts",
+    "run": "tsx src/index.ts",
     "lint": "tsc",
     "test": "cross-env TS_NODE_PROJECT='./tsconfig.json' mocha --ui tdd",
     "build": "tsup src/index.ts --format cjs,esm --dts --minify",
