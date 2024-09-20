@@ -111,36 +111,6 @@ const promptForPackageConfig = async () => {
     return { useDefaults, ...packageConfig };
 };
 
-const createPackageJson = (packageName, packageConfig) => {
-    const packageJsonPath = path.join(__dirname, packageName, 'package.json');
-    const config = packageConfig.useDefaults
-        ? {
-            name: packageName,
-            version: '1.0.0',
-            main: 'index.js',
-            scripts: {
-                test: 'echo "Error: no test specified" && exit 1',
-            },
-            repository: {
-                type: 'git',
-                url: `git+https://github.com/${process.env.USERNAME}/${packageName}.git`,
-            },
-            keywords: [],
-            author: '',
-            license: 'ISC',
-            bugs: {
-                url: `https://github.com/${process.env.USERNAME}/${packageName}/issues`,
-            },
-            homepage: `https://github.com/${process.env.USERNAME}/${packageName}#readme`,
-        }
-        : {
-            ...packageConfig,
-            name: packageName,
-        };
-
-    fs.writeFileSync(packageJsonPath, JSON.stringify(config, null, 2));
-};
-
 const generateReadme = (packageName) => {
     const readmePath = path.join(__dirname, packageName, 'README.md');
 
