@@ -1,4 +1,4 @@
-# make-npm-package
+# npm-package-factory
 
 Easily generate boilerplate for a new npm package:
 - Generates configuration files
