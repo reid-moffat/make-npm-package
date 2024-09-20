@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from 'path';
 import shell from 'shelljs';
 import chalk from "chalk";
+import yoctoSpinner from "yocto-spinner";
 
 class Generators {
 
@@ -19,11 +20,33 @@ class Generators {
         fs.mkdirSync(this._packageDirectory, { recursive: true });
     }
 
-    public createPackageJson = () => {
+    public runTasks = () => {
+        const packageSpinner = yoctoSpinner({ text: 'Creating package.json' }).start();
+        this.createPackageJson();
+        packageSpinner.success('package.json created');
+
+        const readmeSpinner = yoctoSpinner({ text: 'Creating README.md...' }).start();
+        this.createReadme();
+        readmeSpinner.success('README.md created');
+
+        const gitSpinner = yoctoSpinner({ text: 'Initializing git repository...' }).start();
+        this.initGitRepo();
+        gitSpinner.success('Git repository initialized');
+
+        const dependenciesSpinner = yoctoSpinner({ text: 'Installing dependencies...' }).start();
+        this.installDependencies();
+        dependenciesSpinner.success('Dependencies installed');
+
+        const srcSpinner = yoctoSpinner({ text: 'Creating code structure...' }).start();
+        this.createSourceFiles();
+        srcSpinner.success('Code structure created');
+    }
+
+    private createPackageJson = () => {
         this._packageJson.createFile();
     }
 
-    public createReadme = () => {
+    private createReadme = () => {
 
         let readmeStr = "";
         const addLine = (line: string, newlines: number = 2) => readmeStr += line + "\n".repeat(newlines);
@@ -46,18 +69,18 @@ class Generators {
         fs.writeFileSync(this._packageDirectory + "/README.md", readmeStr);
     }
 
-    public initGitRepo = () => {
+    private initGitRepo = () => {
         shell.cd(this._packageDirectory);
         shell.exec(`git init --quiet`);
 
         fs.writeFileSync(this._packageDirectory + "/.gitignore", "node_modules/\ndist/\n");
     }
 
-    public installDependencies = () => {
+    private installDependencies = () => {
         this._packageJson.installDependencies();
     }
 
-    public createSourceFiles = () => {
+    private createSourceFiles = () => {
         const srcDirectory = this._packageDirectory + "/src";
         fs.mkdirSync(srcDirectory, { recursive: true });
         fs.writeFileSync(srcDirectory + "/index.ts", "");
