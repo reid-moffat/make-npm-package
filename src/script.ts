@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import yoctoSpinner from 'yocto-spinner';
-import PackageJson from "./packageJson";
 import Generators from './generators';
 import { promptForPackageDirectory, promptForPackageName, promptForUsingDefaults } from "./prompts";
 
@@ -18,8 +17,7 @@ const run = async () => {
             directorySpinner.success('Package directory created');
 
             const packageSpinner = yoctoSpinner({ text: 'Creating package.json' }).start();
-            const pkgJSON = new PackageJson(packageName, true);
-            pkgJSON.createFile(packageDirectory);
+            generators.createPackageJson()
             packageSpinner.success('package.json created');
 
             const readmeSpinner = yoctoSpinner({ text: 'Creating README.md...' }).start();
@@ -31,7 +29,7 @@ const run = async () => {
             gitSpinner.success('Git repository initialized');
 
             const dependenciesSpinner = yoctoSpinner({ text: 'Installing dependencies...' }).start();
-            pkgJSON.installDependencies(packageDirectory);
+            generators.installDependencies();
             dependenciesSpinner.success('Dependencies installed');
         }
 
