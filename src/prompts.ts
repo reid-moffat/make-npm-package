@@ -29,7 +29,7 @@ const promptForPackageName = async () => {
 };
 
 const promptForPackageDirectory = async (packageName) => {
-    const defaultDirectory = __dirname + '\\' + packageName;
+    const defaultDirectory = process.cwd() + '\\' + packageName;
 
     const { useDefaultDirectory } = await inquirer.prompt({
         type: 'confirm',
