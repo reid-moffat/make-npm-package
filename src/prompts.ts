@@ -28,7 +28,7 @@ const promptForPackageName = async () => {
     return packageName;
 };
 
-const promptForPackageDirectory = async (packageName) => {
+const promptForPackageDirectory = async (packageName: string) => {
     const defaultDirectory = process.cwd() + '\\' + packageName;
 
     const { useDefaultDirectory } = await inquirer.prompt({
