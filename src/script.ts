@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import Listr from 'listr';
+import yoctoSpinner from 'yocto-spinner';
 import PackageJson from "./packageJson";
 import Readme from "./readme";
 import { promptForPackageDirectory, promptForPackageName, promptForUsingDefaults } from "./prompts";
@@ -12,22 +12,21 @@ const run = async () => {
 
         await promptForUsingDefaults();
 
-        const tasks = new Listr([
-            {
-                title: `Creating package.json`,
-                task: () => { new PackageJson(packageName, true).createFile(packageDirectory); }
-            },
-            {
-                title: `Generating README.md`,
-                task: () => { new Readme(packageName).createFile(packageDirectory) }
-            },
-            {
-                title: `Initializing Git repository`,
-                task: () => initGitRepo()
-            }
-        ]);
+        const tasks = async () => {
+            let spinner = yoctoSpinner({ text: 'Creating package.json' }).start();
+            new PackageJson(packageName, true).createFile(packageDirectory);
+            spinner.success('package.json created');
 
-        await tasks.run();
+            spinner = yoctoSpinner({ text: 'Creating README.md...' }).start();
+            new Readme(packageName).createFile(packageDirectory);
+            spinner.success('README.md created');
+
+            spinner = yoctoSpinner({ text: 'Initializing git repository...' }).start();
+            initGitRepo();
+            spinner.success('Git repository initialized');
+        }
+
+        await tasks();
 
         console.log(chalk.green('\nBoilerplate generation completed!'));
         console.log(chalk.cyan(`Now you can start coding in your new package: ${packageName}`));
