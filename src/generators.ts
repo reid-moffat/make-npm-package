@@ -49,6 +49,8 @@ class Generators {
     public initGitRepo = () => {
         shell.cd(this._packageDirectory);
         shell.exec(`git init --quiet`);
+
+        fs.writeFileSync(this._packageDirectory + "/.gitignore", "node_modules/\ndist/\n");
     }
 
     public installDependencies = () => {
