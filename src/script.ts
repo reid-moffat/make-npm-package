@@ -13,19 +13,26 @@ const run = async () => {
         await promptForUsingDefaults();
 
         const tasks = async () => {
+            const directorySpinner = yoctoSpinner({ text: 'Creating package directory...' }).start();
             const generators = new Generators(packageName, packageDirectory);
+            directorySpinner.success('Package directory created');
 
-            let spinner = yoctoSpinner({ text: 'Creating package.json' }).start();
-            new PackageJson(packageName, true).createFile(packageDirectory);
-            spinner.success('package.json created');
+            const packageSpinner = yoctoSpinner({ text: 'Creating package.json' }).start();
+            const pkgJSON = new PackageJson(packageName, true);
+            pkgJSON.createFile(packageDirectory);
+            packageSpinner.success('package.json created');
 
-            spinner = yoctoSpinner({ text: 'Creating README.md...' }).start();
+            const readmeSpinner = yoctoSpinner({ text: 'Creating README.md...' }).start();
             generators.createReadme();
-            spinner.success('README.md created');
+            readmeSpinner.success('README.md created');
 
-            spinner = yoctoSpinner({ text: 'Initializing git repository...' }).start();
-            initGitRepo();
-            spinner.success('Git repository initialized');
+            const gitSpinner = yoctoSpinner({ text: 'Initializing git repository...' }).start();
+            generators.initGitRepo();
+            gitSpinner.success('Git repository initialized');
+
+            const dependenciesSpinner = yoctoSpinner({ text: 'Installing dependencies...' }).start();
+            pkgJSON.installDependencies(packageDirectory);
+            dependenciesSpinner.success('Dependencies installed');
         }
 
         await tasks();
@@ -35,11 +42,6 @@ const run = async () => {
     } catch (error) {
         console.error(chalk.red('Error occurred:'), error);
     }
-};
-
-const initGitRepo = () => {
-    // Simulate git init command
-    console.log(chalk.yellow('Initializing Git repository...'));
 };
 
 export default run;

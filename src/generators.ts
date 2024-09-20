@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import shell from 'shelljs';
 
 class Generators {
 
@@ -33,6 +34,11 @@ class Generators {
         addLine('...');
 
         fs.writeFileSync(this._packageDirectory + "/README.md", readmeStr);
+    }
+
+    public initGitRepo = () => {
+        shell.cd(this._packageDirectory);
+        shell.exec(`git init`);
     }
 }
 

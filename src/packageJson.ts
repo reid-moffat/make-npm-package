@@ -124,7 +124,9 @@ class PackageJson {
         }
 
         fs.writeFileSync(path.join(directory, "package.json"), JSON.stringify(result, null, 4));
+    }
 
+    public installDependencies(directory: string) {
         this.validatePackageManager();
 
         shell.cd(directory);
