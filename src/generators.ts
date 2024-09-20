@@ -63,8 +63,10 @@ class Generators {
         fs.writeFileSync(srcDirectory + "/index.ts", "");
 
         const testDirectory = this._packageDirectory + "/test";
+        const testBoilerplate = "import { expect } from 'chai';\n\nsuite(\"Suite name\", function() {\n\n" +
+            "    test(\"Test name\", function() {\n        expect(true).to.equal(true);\n    });\n});\n";
         fs.mkdirSync(testDirectory, { recursive: true });
-        fs.writeFileSync(testDirectory + "/index.test.ts", "");
+        fs.writeFileSync(testDirectory + "/index.test.ts", testBoilerplate);
     }
 }
 
