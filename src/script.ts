@@ -14,26 +14,7 @@ const run = async () => {
 
         const packageDirectory = await promptForPackageDirectory(packageName);
 
-        const defaults = {
-            "Language": "TypeScript",
-            "Source Control": "git",
-            "Changeset Manager": "changeset",
-            "Testing": ["mocha (tdd)", "chai"],
-            "Linting": ["tsc", "eslint"],
-            "Build": "tsup",
-            "Package Manager": "pnpm"
-        };
-
-        console.log(chalk.blue.bold("Default Settings for Package Installation:"));
-
-        for (const [category, options] of Object.entries(defaults)) {
-            if (Array.isArray(options)) {
-                console.log(`${chalk.green(category)}:`);
-                options.forEach(option => console.log(`  ${chalk.yellow('•')} ${chalk.yellow(option)}`));
-            } else {
-                console.log(`${chalk.green(category)}: ${chalk.yellow(options)}`);
-            }
-        }
+        await promptForUsingDefaults();
 
         const tasks = new Listr([
             {
@@ -93,22 +74,39 @@ const promptForPackageDirectory = async (packageName) => {
     return __dirname + '\\' + packageName;
 }
 
-const promptForPackageConfig = async () => {
+const promptForUsingDefaults = async () => {
+
+    const defaults = {
+        "Language": "TypeScript",
+        "Source Control": "git",
+        "Changeset Manager": "changeset",
+        "Testing": ["mocha (tdd)", "chai"],
+        "Linting": ["tsc", "eslint"],
+        "Build": "tsup",
+        "Package Manager": "pnpm"
+    };
+
+    console.log(chalk.blue.bold("Default Settings for Package Installation:"));
+
+    for (const [category, options] of Object.entries(defaults)) {
+        if (Array.isArray(options)) {
+            console.log(`${chalk.green(category)}:`);
+            options.forEach(option => console.log(`  ${chalk.yellow('•')} ${chalk.yellow(option)}`));
+        } else {
+            console.log(`${chalk.green(category)}: ${chalk.yellow(options)}`);
+        }
+    }
+
     const { useDefaults } = await inquirer.prompt({
         type: 'confirm',
         name: 'useDefaults',
-        message: `Would you like to use default package configuration?`
+        message: `Start package installation (no to quit)?`
     });
 
-    let packageConfig;
     if (!useDefaults) {
-        // Prompt for specific config options if not using defaults
-        packageConfig = await inquirer.prompt([
-            // Add more config prompts as needed
-        ]);
+        console.log(chalk.red('Exiting script...'));
+        process.exit(0);
     }
-
-    return { useDefaults, ...packageConfig };
 };
 
 const generateReadme = (packageName) => {
