@@ -97,6 +97,8 @@ class Generators {
             "        uses: actions/checkout@v4\n" +
             "      - name: Setup pnpm\n" +
             "        uses: pnpm/action-setup@v4\n" +
+            "        with:\n" +
+            "          version: 9.5.0\n" +
             "      - name: Setup node\n" +
             "        uses: actions/setup-node@v4\n" +
             "        with:\n" +
@@ -123,6 +125,8 @@ class Generators {
             "        uses: actions/checkout@v4\n" +
             "      - name: Setup pnpm\n" +
             "        uses: pnpm/action-setup@v4\n" +
+            "        with:\n" +
+            "          version: 9.5.0\n" +
             "      - name: Setup node\n" +
             "        uses: actions/setup-node@v4\n" +
             "        with:\n" +
