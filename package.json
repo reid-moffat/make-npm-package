@@ -1,7 +1,7 @@
 {
   "name": "make-npm-package",
   "version": "1.0.0",
-  "description": "",
+  "description": "Easily generate boilerplate for an npm package",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -16,7 +16,15 @@
     "CHANGELOG.md",
     "dist"
   ],
-  "keywords": [],
+  "keywords": [
+    "boilerplate",
+    "npm",
+    "package",
+    "generator",
+    "cli",
+    "scaffold",
+    "scaffolding"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
