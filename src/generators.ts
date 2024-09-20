@@ -258,7 +258,7 @@ class PackageJson {
         for (const key of Object.keys(this)) {
             if (!key.startsWith('_')) {
                 continue; // Ignore package manager as this needs a version
-            }
+            } // @ts-ignore
             result[key.replace('_', '')] = this[key];
         }
 
