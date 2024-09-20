@@ -48,7 +48,7 @@ class Generators {
 
     public initGitRepo = () => {
         shell.cd(this._packageDirectory);
-        shell.exec(`git init`);
+        shell.exec(`git init --quiet`);
     }
 
     public installDependencies = () => {
