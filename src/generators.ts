@@ -26,7 +26,7 @@ class Generators {
         this.createPackageJson();
         this.createReadme();
         this.initGitRepo();
-        this.initChangeset();
+        this.initWorkflows();
         packageSpinner.success('Development files created');
 
         const srcSpinner = yoctoSpinner({ text: 'Creating code structure...' }).start();
@@ -76,9 +76,68 @@ class Generators {
         this._packageJson.installDependencies();
     }
 
-    private initChangeset = () => {
+    private initWorkflows = () => {
         shell.cd(this._packageDirectory);
-        shell.exec('npx changeset init');
+        shell.exec('npx changeset init > nul 2>&1');
+
+        const workflowDirectory = this._packageDirectory + "/.github/workflows";
+        fs.mkdirSync(workflowDirectory, { recursive: true });
+
+        const pushYml =
+            "name: CI\n" +
+            "on:\n" +
+            "  push:\n" +
+            "    branches:\n" +
+            "      - \"**\"\n\n" +
+            "jobs:\n" +
+            "  test:\n" +
+            "    runs-on: ubuntu-latest\n" +
+            "    steps:\n" +
+            "      - name: Checkout\n" +
+            "        uses: actions/checkout@v4\n" +
+            "      - name: Setup pnpm\n" +
+            "        uses: pnpm/action-setup@v4\n" +
+            "      - name: Setup node\n" +
+            "        uses: actions/setup-node@v4\n" +
+            "        with:\n" +
+            "          node-version: 20.x\n" +
+            "          cache: 'pnpm'\n" +
+            "      - name: Install dependencies\n" +
+            "        run: pnpm install --frozen-lockfile\n\n" +
+            "      - name: Run tests\n" +
+            "        run: pnpm run test\n";
+        fs.writeFileSync(workflowDirectory + "/push.yml", pushYml);
+
+        const publishYml =
+            "name: Publish\n" +
+            "on:\n" +
+            "  push:\n" +
+            "    branches:\n" +
+            "      - main\n\n" +
+            "concurrency: ${{ github.workflow }}-${{ github.ref }}\n\n" +
+            "jobs:\n" +
+            "  build:\n" +
+            "    runs-on: ubuntu-latest\n" +
+            "    steps:\n" +
+            "      - name: Checkout\n" +
+            "        uses: actions/checkout@v4\n" +
+            "      - name: Setup pnpm\n" +
+            "        uses: pnpm/action-setup@v4\n" +
+            "      - name: Setup node\n" +
+            "        uses: actions/setup-node@v4\n" +
+            "        with:\n" +
+            "          node-version: 20.x\n" +
+            "          cache: 'pnpm'\n" +
+            "      - name: Install dependencies\n" +
+            "        run: pnpm install --frozen-lockfile\n\n" +
+            "      - name: Create Release Pull Request or Publish\n" +
+            "        id: changesets\n" +
+            "        uses: changesets/action@v1\n" +
+            "        with:\n" +
+            "          publish: pnpm run build\n" +
+            "        env:\n" +
+            "          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n";
+        fs.writeFileSync(workflowDirectory + "/publish.yml", publishYml);
     }
 
     // Creates source directory, test directory & example, mocharc, tsconfig files
