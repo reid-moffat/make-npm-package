@@ -245,9 +245,7 @@ class PackageJson {
             "chai",
             "tsup",
             "typescript",
-            "ts-node",
-            "generate-arrays",
-            "suite-metrics"
+            "ts-node"
         ];
         this.packageDirectory = packageDirectory;
     }
