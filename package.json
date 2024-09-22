@@ -3,7 +3,7 @@
   "version": "1.0.13",
   "description": "Easily generate boilerplate for an npm package",
   "scripts": {
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && tsup src/index.ts --minify --silent",
     "run": "npm run build && node ./dist/index.js",
     "lint": "tsc",
     "test": "cross-env TS_NODE_PROJECT='./tsconfig.json' mocha --ui tdd",
