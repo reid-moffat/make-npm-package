@@ -1,5 +1,7 @@
-import { promptForPackageDirectory, promptForPackageName, promptForUsingDefaults } from "./prompts.ts";
-import Generators from "./generators.ts";
+#!/usr/bin/env node
+
+import { promptForPackageDirectory, promptForPackageName, promptForUsingDefaults } from "./prompts";
+import Generators from "./generators";
 import chalk from "chalk";
 
 const run = async () => {
