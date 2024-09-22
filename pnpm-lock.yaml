@@ -26,9 +26,6 @@ importers:
       shelljs:
         specifier: ^0.8.5
         version: 0.8.5
-      tsx:
-        specifier: ^4.19.1
-        version: 4.19.1
       validate-npm-package-name:
         specifier: ^5.0.1
         version: 5.0.1
@@ -75,6 +72,9 @@ importers:
       tsup:
         specifier: ^8.3.0
         version: 8.3.0(tsx@4.19.1)(typescript@5.6.2)
+      tsx:
+        specifier: ^4.19.1
+        version: 4.19.1
       typescript:
         specifier: ^5.6.2
         version: 5.6.2
