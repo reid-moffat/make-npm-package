@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from 'path';
 import shell from 'shelljs';
 import chalk from "chalk";
-import yoctoSpinner from "yocto-spinner";
+import ora from 'ora';
 import * as commentJson from 'comment-json';
 
 class Generators {
@@ -21,22 +21,23 @@ class Generators {
         fs.mkdirSync(this._packageDirectory, { recursive: true });
     }
 
+    // TODO: use async tasks so the spinner doesn't freeze (JS is singled-threaded, so non async tasks will block the spinner)
     public runTasks = () => {
-        const packageSpinner = yoctoSpinner({ text: 'Creating development files...' }).start();
+        const packageSpinner = ora('Creating development files...').start();
         this.createPackageJson();
         this.createReadme();
         this.createLicense();
         this.initGitRepo();
         this.initWorkflows();
-        packageSpinner.success('Development files created');
+        packageSpinner.succeed('Development files created');
 
-        const srcSpinner = yoctoSpinner({ text: 'Creating code structure...' }).start();
+        const srcSpinner = ora('Creating code structure...').start();
         this.createSourceFiles();
-        srcSpinner.success('Code structure created');
+        srcSpinner.succeed('Code structure created');
 
-        const dependenciesSpinner = yoctoSpinner({ text: 'Installing dependencies...' }).start();
+        const dependenciesSpinner = ora('Installing dependencies...').start();
         this.installDependencies();
-        dependenciesSpinner.success('Dependencies installed');
+        dependenciesSpinner.succeed('Dependencies installed');
     }
 
     private createPackageJson = () => {
