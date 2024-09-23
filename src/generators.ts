@@ -2,8 +2,8 @@ import * as fs from "fs";
 import * as path from 'path';
 import shell from 'shelljs';
 import chalk from "chalk";
-import ora from 'ora';
 import * as commentJson from 'comment-json';
+import logSymbols from "log-symbols";
 
 class Generators {
 
@@ -21,23 +21,22 @@ class Generators {
         fs.mkdirSync(this._packageDirectory, { recursive: true });
     }
 
-    // TODO: use async tasks so the spinner doesn't freeze (JS is singled-threaded, so non async tasks will block the spinner)
     public runTasks = () => {
-        const packageSpinner = ora('Creating development files...').start();
+        process.stdout.write(logSymbols.info + " Creating development files...\r");
         this.createPackageJson();
         this.createReadme();
         this.createLicense();
         this.initGitRepo();
         this.initWorkflows();
-        packageSpinner.succeed('Development files created');
+        process.stdout.write(logSymbols.success + " Development files created    \n");
 
-        const srcSpinner = ora('Creating code structure...').start();
+        process.stdout.write(logSymbols.info + " Creating code structure...\r");
         this.createSourceFiles();
-        srcSpinner.succeed('Code structure created');
+        process.stdout.write(logSymbols.success + " Code structure created    \n");
 
-        const dependenciesSpinner = ora('Installing dependencies...').start();
+        process.stdout.write(logSymbols.info + " Installing dependencies...\r");
         this.installDependencies();
-        dependenciesSpinner.succeed('Dependencies installed');
+        process.stdout.write(logSymbols.success + " Dependencies installed    \n");
     }
 
     private createPackageJson = () => {
