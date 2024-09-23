@@ -60,10 +60,17 @@ const promptForUsingDefaults = async () => {
     const defaults = {
         "Language": "TypeScript",
         "Source Control": "git",
+        "Build/run tools": [
+            "tsc",
+            "tsup",
+            "ts-node",
+            "cross-env"
+        ],
         "Changeset Manager": "changeset",
-        "Testing": ["mocha (tdd)", "chai"],
-        "Linting": ["tsc", "eslint"],
-        "Build": "tsup",
+        "Testing": [
+            "mocha (tdd)",
+            "chai"
+        ],
         "Package Manager": "pnpm"
     };
 
