@@ -7,6 +7,7 @@
     "run": "npm run build && node ./dist/index.js",
     "lint": "tsc",
     "test": "cross-env TS_NODE_PROJECT='./test/tsconfig.test.json' mocha --ui tdd",
+    "testScripts": "echo \"Verifying all scritps run...\" && npm run lint && npm run build && npm run test && npm run run",
     "deployHelp": "echo \"1) Run 'changeset' 2) Merge changes to main 3) Merge changeset PR 4) npm run deploy (verify it looks good)\"",
     "deploy": "git checkout main && git pull && npm run build && npm publish"
   },
