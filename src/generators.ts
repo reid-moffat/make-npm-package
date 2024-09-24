@@ -280,7 +280,7 @@ class PackageJson {
             "lint": "tsc",
             "test": "cross-env TS_NODE_PROJECT='./tsconfig.json' mocha --ui tdd",
             "build": "tsup src/index.ts --format cjs,esm --dts --minify",
-            "deployHelp": "echo \"1) Run 'changeset' 2) Merge changes to main 3) Merge changeset PR 4) npm run deploy (verify it looks good)\"",
+            "deployHelp": "echo 1) Run 'changeset' 2) Merge changes to main 3) Merge changeset PR 4) npm run deploy (verify it looks good)",
             "deploy": "git checkout main && git pull && npm run build && npm publish"
         };
         this._files = [
