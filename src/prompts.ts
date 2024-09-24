@@ -59,7 +59,10 @@ const promptForUsingDefaults = async () => {
 
     const defaults = {
         "Language": "TypeScript",
-        "Source Control": "git",
+        "Source Control": [
+            "git",
+            "github"
+        ],
         "Build/run tools": [
             "tsc",
             "tsup",
