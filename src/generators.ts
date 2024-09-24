@@ -309,7 +309,7 @@ class PackageJson {
             result[key.replace('_', '')] = this[key];
         }
 
-        fs.writeFileSync(path.join(this.packageDirectory, "package.json"), JSON.stringify(result, null, 2));
+        fs.writeFileSync(path.join(this.packageDirectory, "package.json"), JSON.stringify(result, null, 2) + "\n");
     }
 
     // Verifies package manager is installed, then installs dependencies
