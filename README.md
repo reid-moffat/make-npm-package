@@ -1,8 +1,8 @@
 # npm-package-factory
 
-[![npm](https://img.shields.io/npm/v/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
-[![npm](https://img.shields.io/npm/dt/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
-[![npm](https://img.shields.io/npm/l/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
+[![npm](https://img.shields.io/npm/v/npm-package-factory)](https://www.npmjs.com/package/npm-package-factory)
+[![npm](https://img.shields.io/npm/dt/npm-package-factory)](https://www.npmjs.com/package/npm-package-factory)
+[![npm](https://img.shields.io/npm/l/npm-package-factory)](https://www.npmjs.com/package/npm-package-factory)
 
 Easily generate boilerplate for a new npm package:
 - Generates configuration files
