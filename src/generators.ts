@@ -235,7 +235,7 @@ class Generators {
         const tsconfigPath = this._packageDirectory  + '/tsconfig.json';
         const tsconfig = commentJson.parse(fs.readFileSync(tsconfigPath, 'utf8')); // @ts-ignore
         tsconfig.compilerOptions.module = 'es6'; // Allows for tests to run
-        fs.writeFileSync(tsconfigPath, commentJson .stringify(tsconfig, null, 2));
+        fs.writeFileSync(tsconfigPath, commentJson .stringify(tsconfig, null, 2) + "\n");
     }
 }
 
