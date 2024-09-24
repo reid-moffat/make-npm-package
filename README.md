@@ -2,14 +2,14 @@
 
 Easily generate boilerplate for a new npm package:
 - Generates configuration files
-- Options to add git, typescript and more
-- Installs packages to simplify testing, deployment, etc
-- Clear scripts and instructions for tasks
+- Adds infrastructure like git, workflows and typescript
+- Installs packages to simplify development, testing, deployment and more
+- Provides clear scripts and instructions for tasks
 
 ## 🚀 Usage
 
 ```bash
-cd /desired/path/for/package
+cd /desired/location/for/package # Optional, can configure through terminal but this is quicker
 
 npx make-npm-package
 

@@ -2,8 +2,8 @@ import * as fs from "fs";
 import * as path from 'path';
 import shell from 'shelljs';
 import chalk from "chalk";
-import yoctoSpinner from "yocto-spinner";
 import * as commentJson from 'comment-json';
+import logSymbols from "log-symbols";
 
 class Generators {
 
@@ -22,21 +22,22 @@ class Generators {
     }
 
     public runTasks = () => {
-        const packageSpinner = yoctoSpinner({ text: 'Creating development files...' }).start();
+        process.stdout.write(logSymbols.info + " Creating development files...\r");
         this.createPackageJson();
         this.createReadme();
         this.createLicense();
+        this.createTodoList();
         this.initGitRepo();
         this.initWorkflows();
-        packageSpinner.success('Development files created');
+        process.stdout.write(logSymbols.success + " Development files created    \n");
 
-        const srcSpinner = yoctoSpinner({ text: 'Creating code structure...' }).start();
+        process.stdout.write(logSymbols.info + " Creating code structure...\r");
         this.createSourceFiles();
-        srcSpinner.success('Code structure created');
+        process.stdout.write(logSymbols.success + " Code structure created    \n");
 
-        const dependenciesSpinner = yoctoSpinner({ text: 'Installing dependencies...' }).start();
+        process.stdout.write(logSymbols.info + " Installing dependencies...\r");
         this.installDependencies();
-        dependenciesSpinner.success('Dependencies installed');
+        process.stdout.write(logSymbols.success + " Dependencies installed    \n");
     }
 
     private createPackageJson = () => {
@@ -67,11 +68,59 @@ class Generators {
     }
 
     private createLicense = () => {
-        const license = "MIT License\n\n" +
-            "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\n" +
-            "The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n" +
-            "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
+        const license = "MIT License\n" +
+            "\n" +
+            "Copyright (c) [YEAR] [YOUR NAME]\n" +
+            "\n" +
+            "Permission is hereby granted, free of charge, to any person obtaining a copy\n" +
+            "of this software and associated documentation files (the \"Software\"), to deal\n" +
+            "in the Software without restriction, including without limitation the rights\n" +
+            "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n" +
+            "copies of the Software, and to permit persons to whom the Software is\n" +
+            "furnished to do so, subject to the following conditions:\n" +
+            "\n" +
+            "The above copyright notice and this permission notice shall be included in all\n" +
+            "copies or substantial portions of the Software.\n" +
+            "\n" +
+            "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n" +
+            "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n" +
+            "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n" +
+            "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n" +
+            "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" +
+            "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n" +
+            "SOFTWARE.\n";
+
         fs.writeFileSync(this._packageDirectory + "/LICENSE", license);
+    }
+
+    private createTodoList = () => {
+        const todoList = "# TODO list\n" +
+            "\n" +
+            "Congratulations, your package is almost ready! 🎉\n" +
+            "\n" +
+            "## ⚙️ Package setup:\n" +
+            "\n" +
+            "- In package.json, add the package description, author (your name(s)) and keywords\n" +
+            "- Add you github repository URL to repository -> url in package.json, and issues page on that repo to 'bugs'\n" +
+            "- Update LICENSE file with the year and your name (after copyright)\n" +
+            "- Add any other files/folders you want git to ignore (e.g. IDE files) to the .gitignore file\n" +
+            "\n" +
+            "## 🛠️ Working with your package:\n" +
+            "\n" +
+            "- Add your source code to the src/ folder. You can use index.ts to export everything, then other files for \n" +
+            "  implementations\n" +
+            "- Write comprehensive tests in the test/ folder. Files that end in .test.ts will be included automatically in tests\n" +
+            "- The current setup builds the code into multiple file types (.cjs, .d.cts, .d.ts and .js) to allow for easy \n" +
+            "  importing for different node configurations by people who use your package. tsup will handle this \n" +
+            "  when you run ``npm run build``, minifying (reducing the size) of the code as much as possible - so you don't have \n" +
+            "  to worry about compatibility, writing in typescript is fine and your package can be used by plain js users\n" +
+            "- To test, run ``npm run test``\n" +
+            "- To lint, run ``npm run lint``\n" +
+            "- If your package is ready to deploy, run ``npm run deployHelp`` and follow the steps provided\n" +
+            "\n" +
+            "Note: You'll need to give permissions to the github token so it can make pull requests for changesets\n";
+
+        fs.writeFileSync(this._packageDirectory + "/TODO.md", todoList);
     }
 
     private initGitRepo = () => {
@@ -166,8 +215,8 @@ class Generators {
         fs.writeFileSync(testDirectory + "/index.test.ts", testBoilerplate);
 
         const mocharcPath = this._packageDirectory + "/.mocharc.json";
-        const mocharc = '{"require":"ts-node/register","extension":["ts"],"spec":"./test/**/*.test{.js,.ts}","node-option":["loader=ts-node/esm"],"recursive":true,"timeout":5000}';
-        fs.writeFileSync(mocharcPath, mocharc);
+        const mocharc = {"require":"ts-node/register","extension":["ts"],"spec":"./test/**/*.test{.js,.ts}","node-option":["loader=ts-node/esm"],"recursive":true,"timeout":5000};
+        fs.writeFileSync(mocharcPath, JSON.stringify(mocharc, null, 2));
 
         shell.cd(this._packageDirectory);
         shell.exec('tsc --init > nul 2>&1');
@@ -244,9 +293,7 @@ class PackageJson {
             "chai",
             "tsup",
             "typescript",
-            "ts-node",
-            "generate-arrays",
-            "suite-metrics"
+            "ts-node"
         ];
         this.packageDirectory = packageDirectory;
     }
