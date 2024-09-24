@@ -46,10 +46,16 @@ class Generators {
 
     private createReadme = () => {
 
+        let badges = '';
+        badges += `[![npm](https://img.shields.io/npm/v/${this._packageName})](https://www.npmjs.com/package/${this._packageName}) `;
+        badges += `[![npm](https://img.shields.io/npm/dt/${this._packageName})](https://www.npmjs.com/package/${this._packageName}) `;
+        badges += `[![npm](https://img.shields.io/npm/l/${this._packageName})](https://www.npmjs.com/package/${this._packageName})`;
+
         let readmeStr = "";
         const addLine = (line: string, newlines: number = 2) => readmeStr += line + "\n".repeat(newlines);
 
         addLine(`# ${this._packageName}`);
+        addLine(badges);
         addLine(`A brief description of your package goes here`);
 
         addLine('## 📦 Installation');
