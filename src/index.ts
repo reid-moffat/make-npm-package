@@ -15,7 +15,7 @@ const run = async () => {
         new Generators(packageName, packageDirectory).runTasks();
 
         console.log(chalk.green('\nBoilerplate generation completed!'));
-        console.log(chalk.cyan(`Now you can start coding in your new package: ${packageName}`));
+        console.log(chalk.cyan(`Follow the instruction in TODO.md to setup and use your package!`));
     } catch (error) {
         console.error(chalk.red('Error occurred:'), error);
     }
