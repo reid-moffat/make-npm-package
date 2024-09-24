@@ -26,6 +26,7 @@ class Generators {
         this.createPackageJson();
         this.createReadme();
         this.createLicense();
+        this.createTodoList();
         this.initGitRepo();
         this.initWorkflows();
         process.stdout.write(logSymbols.success + " Development files created    \n");
@@ -90,6 +91,36 @@ class Generators {
             "SOFTWARE.\n";
 
         fs.writeFileSync(this._packageDirectory + "/LICENSE", license);
+    }
+
+    private createTodoList = () => {
+        const todoList = "# TODO list\n" +
+            "\n" +
+            "Congratulations, your package is almost ready! 🎉\n" +
+            "\n" +
+            "## ⚙️ Package setup:\n" +
+            "\n" +
+            "- In package.json, add the package description, author (your name(s)) and keywords\n" +
+            "- Add you github repository URL to repository -> url in package.json, and issues page on that repo to 'bugs'\n" +
+            "- Update LICENSE file with the year and your name (after copyright)\n" +
+            "- Add any other files/folders you want git to ignore (e.g. IDE files) to the .gitignore file\n" +
+            "\n" +
+            "## 🛠️ Working with your package:\n" +
+            "\n" +
+            "- Add your source code to the src/ folder. You can use index.ts to export everything, then other files for \n" +
+            "  implementations\n" +
+            "- Write comprehensive tests in the test/ folder. Files that end in .test.ts will be included automatically in tests\n" +
+            "- The current setup builds the code into multiple file types (.cjs, .d.cts, .d.ts and .js) to allow for easy \n" +
+            "  importing for different node configurations by people who use your package. tsup will handle this \n" +
+            "  when you run ``npm run build``, minifying (reducing the size) of the code as much as possible - so you don't have \n" +
+            "  to worry about compatibility, writing in typescript is fine and your package can be used by plain js users\n" +
+            "- To test, run ``npm run test``\n" +
+            "- To lint, run ``npm run lint``\n" +
+            "- If your package is ready to deploy, run ``npm run deployHelp`` and follow the steps provided\n" +
+            "\n" +
+            "Note: You'll need to give permissions to the github token so it can make pull requests for changesets\n";
+
+        fs.writeFileSync(this._packageDirectory + "/TODO.md", todoList);
     }
 
     private initGitRepo = () => {
