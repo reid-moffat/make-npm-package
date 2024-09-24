@@ -215,8 +215,19 @@ class Generators {
         fs.writeFileSync(testDirectory + "/index.test.ts", testBoilerplate);
 
         const mocharcPath = this._packageDirectory + "/.mocharc.json";
-        const mocharc = {"require":"ts-node/register","extension":["ts"],"spec":"./test/**/*.test{.js,.ts}","node-option":["loader=ts-node/esm"],"recursive":true,"timeout":5000};
-        fs.writeFileSync(mocharcPath, JSON.stringify(mocharc, null, 2));
+        const mocharc = {
+            "require": "ts-node/register",
+            "extension": [
+                "ts"
+            ],
+            "spec": "./test/**/*.test{.js,.ts}",
+            "node-option": [
+                "loader=ts-node/esm"
+            ],
+            "recursive": true,
+            "timeout": 5000
+        };
+        fs.writeFileSync(mocharcPath, JSON.stringify(mocharc, null, 2) + "\n");
 
         shell.cd(this._packageDirectory);
         shell.exec('tsc --init > nul 2>&1');
