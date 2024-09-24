@@ -15,7 +15,7 @@ Easily generate boilerplate for a new npm package:
 ```bash
 cd /desired/location/for/package # Optional, can configure through terminal but this is quicker
 
-npx make-npm-package
+npx npm-package-factory
 
 # All instructions will be provided in your terminal!
 ```
