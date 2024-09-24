@@ -2,6 +2,17 @@
   "name": "npm-package-factory",
   "version": "2.0.0",
   "description": "Easily generate boilerplate for an npm package",
+  "author": "Reid Moffat <reid.moffat9@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "boilerplate",
+    "npm",
+    "package",
+    "generator",
+    "cli",
+    "scaffold",
+    "scaffolding"
+  ],
   "scripts": {
     "build": "rimraf ./dist && tsup src/index.ts --minify --silent",
     "run": "npm run build && node ./dist/index.js",
@@ -18,17 +29,11 @@
   "bin": {
     "npm-package-factory": "./dist/index.js"
   },
-  "keywords": [
-    "boilerplate",
-    "npm",
-    "package",
-    "generator",
-    "cli",
-    "scaffold",
-    "scaffolding"
-  ],
-  "author": "Reid Moffat <reid.moffat9@gmail.com>",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reid-moffat/npm-package-factory.git"
+  },
+  "bugs": "https://github.com/reid-moffat/npm-package-factory/issues",
   "dependencies": {
     "chalk": "^4.1.2",
     "comment-json": "^4.2.5",
