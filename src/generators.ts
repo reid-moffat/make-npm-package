@@ -142,6 +142,7 @@ class Generators {
 
     private initWorkflows = () => {
         shell.cd(this._packageDirectory);
+        shell.exec('npm i @changesets/cli --silent');
         shell.exec('npx changeset init > nul 2>&1');
 
         const workflowDirectory = this._packageDirectory + "/.github/workflows";
